@@ -1,6 +1,6 @@
-Course: 17781 Mobile and IoT Computing Services
-Term: Spring 2023
-This is the code implementation of OnDose mobile application, which is a medication/supplement reminder app.
+Course: 17781 Mobile and IoT Computing Services <br />
+Term: Spring 2023 <br />
+This is the code implementation of OnDose mobile application, which is a medication/supplement reminder app. OnDose provides users with daily med-taking reminders, refill reminders, interaction checking, and more funtionalities. It helps users to take the correct dosage on time and stay informed about the details of medications and supplements.
 
 # Recommended next steps:
 Note: Make sure you have installed native code dependencies [here](https://reactnative.dev/docs/environment-setup#installing-dependencies)
