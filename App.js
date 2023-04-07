@@ -3,6 +3,8 @@ import { AuthProvider, AuthContext } from './src/AuthContext';
 import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp';
 import SignUpSuccess from './src/screens/SignUpSuccess';
+import ResetPassword from './src/screens/ResetPassword';
+import ResetPasswordSuccess from './src/screens/ResetPasswordSuccess';
 import MainApp from './src/MainApp';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -17,6 +19,8 @@ const AppContent = () => {
       <ScreenStack.Screen name="Login" component={Login} />
       <ScreenStack.Screen name="SignUp" component={SignUp} />
       <ScreenStack.Screen name="SignUpSuccess" component={SignUpSuccess} />
+      <ScreenStack.Screen name="ResetPassword" component={ResetPassword} />
+      <ScreenStack.Screen name="ResetPasswordSuccess" component={ResetPasswordSuccess} />
     </ScreenStack.Navigator>
     </NavigationContainer>
   );

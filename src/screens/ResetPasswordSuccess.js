@@ -5,7 +5,7 @@ import { Button, Input, Text } from 'react-native-elements';
 import { AuthContext } from '../AuthContext';
 import theme from '../theme';
 
-const Login = ({navigation}) => {
+const ResetPasswordSuccess = ({navigation}) => {
   const { setIsAuthenticated } = useContext(AuthContext);
 
   const handleLogin = () => {
@@ -15,24 +15,11 @@ const Login = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.TextWelcome}>Welcome to OnDose!</Text>
-      <Image
-        style={styles.Logo}
-        source={require('../../assets/Logo.png')}
-      />
-      <Input placeholder="Enter Your Email" placeholderTextColor={theme.colors.description} keyboardType="email-address"/>
-      <Input placeholder="Enter Your Password" placeholderTextColor={theme.colors.description} secureTextEntry/>
-      <TouchableOpacity style={styles.createAccountButton} onPress={() => {navigation.navigate('ResetPassword');}}>
-        <Text style={styles.TextCreateAccount}>Forget password?</Text>
-      </TouchableOpacity>
-
+      <Text style={styles.TextCongrats}>Congratulations!</Text>
+      <Text style={styles.TextSuccess}>An email with a link to reset your password has been successfully sent to your email address! Please check your email for the next steps.</Text>
+      <Text style={styles.TextQuestion}>Already reset your password?</Text>
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.TextLogin}>LOG IN</Text>
-      </TouchableOpacity>
-      
-      
-      <TouchableOpacity onPress={() => {navigation.navigate('SignUp');}}>
-        <Text style={styles.TextCreateAccount}>Don't have an account? Click here!</Text>
       </TouchableOpacity>
 
     </View>);
@@ -62,30 +49,30 @@ const styles = StyleSheet.create({
     borderRadius: 18
   },
 
-  TextCreateAccount: {
-      fontWeight: '500',
-      fontSize: 18,
-      textAlign: 'center',
-      color: theme.colors.primary_focused
-  },
-
   TextLogin: {
     fontSize: 22,
     color: 'white',
     fontWeight: 'bold',
   },
 
-  Logo: {
-    width: 200,
-    height: 200,
-    marginBottom: 20
+  TextCongrats: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 120
   },
 
-  TextWelcome: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 20
+  TextSuccess: {
+    fontSize: 18,
+    fontWeight: '500',
+    marginBottom: 160,
+    textAlign: 'center'
+  },
+
+  TextQuestion: {
+    fontSize: 18,
+    fontWeight: '500',
+    marginBottom: 5
   }
 });
 
-export default Login;
+export default ResetPasswordSuccess;

@@ -20,11 +20,6 @@ const Reminders = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const navigation = useNavigation();
 
-  const handleDetailPress = (Med) => {
-    const MedIndex = fakeData.findIndex((data) => Med.id === data.id);
-    navigation.navigate('MyMedications', { selectedMedIndex: MedIndex });
-  };
-
   const handleCompletePress = (MedId) => {
     setMeds((prevMeds) =>
       prevMeds.map((Med) =>
@@ -37,6 +32,9 @@ const Reminders = () => {
     setSelectedIndex(selectedIndex);
   };
 
+  // Code adapted from https://dmitripavlutin.com/javascript-array-group/ and 
+  // https://stackoverflow.com/questions/61939507/how-to-group-an-array-within-react-native on April 2nd, 2023 
+  // main goal is to group the medications by taking time --> for displaying the meds on the screen
   const groupMedsByTime = (Meds) => {
     const groups = Meds.reduce((acc, Med) => {
       const group = acc.find((g) => g.time === Med.time);
@@ -46,19 +44,17 @@ const Reminders = () => {
         acc.push({ time: Med.time, Meds: [Med] });
       }
       return acc;
-    }, []);
+    }, []); 
 
-    return groups.sort((a, b) => new Date('1970/01/01 ' + a.time) - new Date('1970/01/01 ' + b.time));
+    return groups.sort((a, b) => new Date('2023/01/01 ' + a.time) - new Date('2023/01/01 ' + b.time));
   };
 
-  const filterButtons = ['Uncompleted', 'Completed'];//,'All'];
+  const filterButtons = ['Uncompleted', 'Completed'];
 
-  const filteredMeds =
-    selectedIndex === 2
-      ? Meds
-      : Meds.filter((Med) => Med.completed === (selectedIndex === 1));
+  const filteredMeds = selectedIndex === 2 ? Meds : Meds.filter((Med) => Med.completed === (selectedIndex === 1));
 
   const groupedMeds = groupMedsByTime(filteredMeds);
+
   const totalMeds = Meds.length;
   const completedMeds = Meds.filter(Med => Med.completed).length;
   const progress = completedMeds / totalMeds;
@@ -100,7 +96,6 @@ const Reminders = () => {
               <CustomListItem
                 key={Med.id}
                 item={Med}
-                onDetailPress={() => handleDetailPress(Med)}
                 onCompletePress={() => handleCompletePress(Med.id)}
               />
             ))}

@@ -5,12 +5,13 @@ import { AuthContext } from '../AuthContext';
 import theme from '../theme';
 
 const SignUp = ({ navigation }) => {
-  const { setIsAuthenticated } = useContext(AuthContext);
+  // Will be handled later
+  // const { setIsAuthenticated } = useContext(AuthContext);
 
-  const handleSignup = () => {
-    // add signup
-    setIsAuthenticated(true);
-  };
+  // const handleSignup = () => {
+  //   // add signup
+  //   setIsAuthenticated(true);
+  // };
 
   return (
     <View style={styles.container}>
