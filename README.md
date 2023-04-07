@@ -1,0 +1,1 @@
+Command: expo start
