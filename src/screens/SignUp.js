@@ -21,7 +21,7 @@ const SignUp = ({ navigation }) => {
       <Input placeholder="Enter Password" placeholderTextColor={theme.colors.description} secureTextEntry/>
       <Input placeholder="Confirm Password" placeholderTextColor={theme.colors.description} secureTextEntry />
       
-      <TouchableOpacity style={styles.button} onPress={handleSignup}>
+      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('SignUpSuccess');}}>
             <Text style={styles.TextSignUp}>SIGN UP</Text>
       </TouchableOpacity>
       
