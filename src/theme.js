@@ -10,7 +10,7 @@ export default {
     error: '#B00020',
     onPrimary: '#FFFFFF',
     onBackground: '#000000',
-    onSurface: '#000000',
+    unselected: '#F2F0CD',
     onError: '#FFFFFF',
     gray: '#383636',
     green: '#4CAF50',

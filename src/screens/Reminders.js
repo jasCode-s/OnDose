@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0,
     marginBottom: 20,
-    backgroundColor: theme.colors.primary// unselected button color
+    backgroundColor: theme.colors.unselected// unselected button color
   },
   timeHeading: {
     fontSize: theme.text.fontSize.large,
