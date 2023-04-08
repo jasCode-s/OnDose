@@ -3,6 +3,7 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
+import { Provider, Snackbar } from 'react-native-paper';
 
 import CustomListItem from '../components/ListItem';
 import theme from '../theme';
@@ -13,17 +14,47 @@ const Reminders = () => {
     { id: 1, title: 'Medication A', description: 'Take 2 Pills', completed: false, time: '8:00 AM', image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
     { id: 2, title: 'Medication B', description: 'Take 1 Pill', completed: false, time: '6:00 PM', image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
     { id: 3, title: 'Medication C', description: 'Take 1 Pill', completed: false, time: '6:00 PM', image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
-    { id: 4, title: 'Medication B', description: 'Take 1 Pill', completed: false, time: '6:30 PM', image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
+    { id: 4, title: 'Medication B', description: 'Take 1 Pill', completed: false, time: '8:30 PM', image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
   ];
 
   const [Meds, setMeds] = useState(fakeData);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const navigation = useNavigation();
 
-  const handleCompletePress = (MedId) => {
+  // Code adapted from https://callstack.github.io/react-native-paper/4.0/snackbar.html for bottom snakerbar notification on April 8th, 2023 
+  const [visible, setVisible] = useState(false);
+  const onToggleSnackBar = () => setVisible(!visible);
+  const onDismissSnackBar = () => setVisible(false);
+
+  const handleCompletePress = (MedId, MedTime) => {
+    var currHour = new Date().getHours();
+    var currMin = new Date().getMinutes();
+    var medTimeLen = MedTime.length;
+    var medHour = medTimeLen == 7 ? MedTime.substring(0, 1) : MedTime.substring(0, 2);
+    var medMin = medTimeLen == 7 ? MedTime.substring(2, 4) : MedTime.substring(3, 5);
+    var AMORPM = medTimeLen == 7 ? MedTime.substring(5, 7) : MedTime.substring(6, 8);
+
+    var intmedHour = AMORPM === "PM" ? parseInt(medHour) + 12 : parseInt(medHour);
+    var canTake = false;
+    if (parseInt(currHour) < intmedHour) {
+      canTake = false; // 13:58 < 14:00
+
+    } else if (parseInt(currHour) == intmedHour) {
+      if (parseInt(currMin) < parseInt(medMin)) {
+        canTake = false; // 14:15 < 14:22
+      } else {
+        canTake = true; // 14:22 = 14:22 or 14:25 < 14:22
+      }
+    } else { // parseInt(currHour) > parseInt(medHour)
+      canTake = true; // 15:00 > 14:22
+    }
+
+    if (!canTake) {
+      onToggleSnackBar();// pop snakerbar notification
+    }
     setMeds((prevMeds) =>
       prevMeds.map((Med) =>
-        Med.id === MedId ? { ...Med, completed: !Med.completed } : Med
+        ((Med.id === MedId) && canTake) ? { ...Med, completed: !Med.completed } : Med
       )
     );
   };
@@ -44,7 +75,7 @@ const Reminders = () => {
         acc.push({ time: Med.time, Meds: [Med] });
       }
       return acc;
-    }, []); 
+    }, []);
 
     return groups.sort((a, b) => new Date('2023/01/01 ' + a.time) - new Date('2023/01/01 ' + b.time));
   };
@@ -60,49 +91,58 @@ const Reminders = () => {
   const progress = completedMeds / totalMeds;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.progressContainer}>
-        <ButtonGroup
-          onPress={updateIndex}
-          selectedIndex={selectedIndex}
-          buttons={filterButtons}
-          containerStyle={styles.buttonGroupContainer}
-          textStyle={{ color: theme.colors.text }}
-          selectedButtonStyle={{ backgroundColor: theme.colors.primary_dark }}// selected button color
-          selectedTextStyle={{ color: theme.colors.grey }}
-          unselectedTextStyle={{ color: theme.colors.description }}
+    <Provider>
+      <View style={styles.container}>
+        <View style={styles.progressContainer}>
+          <ButtonGroup
+            onPress={updateIndex}
+            selectedIndex={selectedIndex}
+            buttons={filterButtons}
+            containerStyle={styles.buttonGroupContainer}
+            textStyle={{ color: theme.colors.text }}
+            selectedButtonStyle={{ backgroundColor: theme.colors.primary }}// selected button color
+            selectedTextStyle={{ color: theme.colors.grey }}
+            unselectedTextStyle={{ color: theme.colors.description }}
+          />
+          <Text style={styles.progressText}>
+            Your Progress For Today ({completedMeds}/{totalMeds})
+          </Text>
+          <Progress.Bar
+            progress={progress}
+            width={null}
+            height={10}
+            borderRadius={5}
+            color={theme.colors.secondary}
+            unfilledColor={theme.colors.secondaryLight}
+            borderWidth={0}
+            style={styles.progressBar}
+          />
+        </View>
+        <FlatList
+          data={groupedMeds}
+          renderItem={({ item }) => (
+            <View style={styles.timeGroupContainer}>
+              <Text style={styles.timeHeading}>{item.time}</Text>
+              {item.Meds.map((Med) => (
+                <CustomListItem
+                  key={Med.id}
+                  item={Med}
+                  onCompletePress={() => handleCompletePress(Med.id, Med.time)}
+                />
+              ))}
+            </View>
+          )}
         />
-        <Text style={styles.progressText}>
-          Your Progress For Today ({completedMeds}/{totalMeds})
-        </Text>
-        <Progress.Bar
-          progress={progress}
-          width={null}
-          height={10}
-          borderRadius={5}
-          color={theme.colors.secondary}
-          unfilledColor={theme.colors.secondaryLight}
-          borderWidth={0}
-          style={styles.progressBar}
-        />
+        <Snackbar
+          visible={visible}
+          onDismiss={onDismissSnackBar}
+          style={styles.snackbar}
+          duration={1800}
+        >
+          A Friendly Reminder: It's not the time yet.
+        </Snackbar>
       </View>
-      <FlatList
-        data={groupedMeds}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.timeGroupContainer}>
-            <Text style={styles.timeHeading}>{item.time}</Text>
-            {item.Meds.map((Med) => (
-              <CustomListItem
-                key={Med.id}
-                item={Med}
-                onCompletePress={() => handleCompletePress(Med.id)}
-              />
-            ))}
-          </View>
-        )}
-      />
-    </View>
+    </Provider>
   );
 };
 
@@ -112,9 +152,14 @@ const styles = StyleSheet.create({
     // marginTop: -40,
     paddingHorizontal: 20,
     rowGap: 10,
-    width:'100%',
+    width: '100%',
     backgroundColor: theme.colors.background
 
+  },
+  snackbar: {
+    width:'90%',
+    marginLeft:'11%',
+    backgroundColor: theme.colors.primary_focused,
   },
   buttonGroupContainer: {
     borderRadius: 10,
@@ -126,12 +171,12 @@ const styles = StyleSheet.create({
     fontSize: theme.text.fontSize.large,
     fontWeight: 'bold',
     marginBottom: 5,
-    marginTop: 10,
+    marginTop: 5,
   },
   timeGroupContainer: {
     flex: 1,
     paddingVertical: 20,
-    rowGap: 10
+    rowGap: 10,
   },
   progressContainer: {
     padding: 20,
