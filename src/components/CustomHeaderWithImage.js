@@ -3,8 +3,13 @@ import React from 'react';
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import theme from '../theme';
+import { useRoute } from '@react-navigation/native';
 
-const CustomHeaderWithImage = ({ navigation, headerImage, showBackButton = false }) => {
+const CustomHeaderWithImage = ({ navigation, headerImage}) => {
+  const route = useRoute();
+  const showBackButton = route.name === 'MedDetail' || route.name === 'Profile' || route.name === 'AddMedication';
+  const profileIconColor = route.name=== 'Profile' ? theme.colors.primary_focused : theme.colors.black;
+
   return (
     <View style={styles.headerContainer}>
       {showBackButton ? (
@@ -15,8 +20,9 @@ const CustomHeaderWithImage = ({ navigation, headerImage, showBackButton = false
           >
             <FontAwesome5 name="arrow-left" size={30} color={theme.colors.black} />
           </TouchableOpacity>
+
           <TouchableOpacity style={styles.profileIconContainer} onPress={() => navigation.navigate('Profile')}>
-            <FontAwesome5 name="user-alt" size={30} color={theme.colors.primary_focused} />
+            <FontAwesome5 name="user-alt" size={30} color={profileIconColor} />
           </TouchableOpacity>
         </>
       ) : (

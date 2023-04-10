@@ -11,6 +11,8 @@ import Reminders from './screens/Reminders';
 import MyMedications from './screens/MyMedications';
 import Settings from './screens/Settings';
 import Profile from './screens/Profile';
+import MedDetail from './screens/MedDetail';
+import AddMedication from './screens/AddMedication';
 import CustomHeaderWithImage from './components/CustomHeaderWithImage';
 
 const Tab = createBottomTabNavigator();
@@ -77,6 +79,25 @@ const MainApp = () => {
             headerShown: true,
           })}
         />
+        <Stack.Screen
+          name="MedDetail"
+          component={MedDetail}
+          theme={theme}
+          options={({ navigation }) => ({
+            header: () => <CustomHeaderWithImage navigation={navigation} headerImage={require('../assets/OnDose.png')} showBackButton={true} />,
+            headerShown: true,
+          })}
+        />
+        <Stack.Screen
+          name="AddMedication"
+          component={AddMedication}
+          theme={theme}
+          options={({ navigation }) => ({
+            header: () => <CustomHeaderWithImage navigation={navigation} headerImage={require('../assets/OnDose.png')} showBackButton={true} />,
+            headerShown: true,
+          })}
+        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
