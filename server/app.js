@@ -10,10 +10,24 @@ const dbConnect = require("./db/conn");
 const User = require("./db/userModel");
 const Allergy = require("./db/allergyModel");
 const Medication = require("./db/medicationModel");
-const auth = require("./auth");
+const auth = require("./db/auth");
 
 // execute database connection
 dbConnect();
+
+// Curb Cores Error by adding a header here
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+    );
+    next();
+});  
 
 // body parser configuration
 app.use(bodyParser.json());
@@ -171,7 +185,7 @@ app.post("/add-allergy", (request, response) => {
 
 // get a particular medication
 app.get("/get-medication/:id", (request, response) => {
-    let db_connect = dbConnect.getDb("medsDB");
+    let db_connect = dbConnect.getDb("test");
     let myquery = { _id: ObjectId(request.params.id) };
     db_connect
       .collection("medications")
@@ -183,7 +197,9 @@ app.get("/get-medication/:id", (request, response) => {
 
 // get all medications
 app.get("/get-medications", (request, response) => {
-    Medication.find({}).toArray(function (err, result) {
+    let db_connect = dbConnect.getDb("test");
+    let meds = db_connect.collection("medications");
+    meds.find({}).toArray(function (err, result) {
         if (err) throw err;
         response.json(result);
     });
@@ -191,7 +207,9 @@ app.get("/get-medications", (request, response) => {
 
 // get all allergies
 app.get("/get-allergies", (request, response) => {
-    Allergy.find({}).toArray(function (err, result) {
+    let allergies = Allergy.find({});
+    console.log(allergies);
+    allergies.toArray(function (err, result) {
         if (err) throw err;
         response.json(result);
     });

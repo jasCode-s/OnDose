@@ -11,6 +11,6 @@ const AllergiesSchema = new mongoose.Schema({
         required: [true, "Please provide the allergic reaction."],
         unique: false,
     },
-})
+});
 
 module.exports = mongoose.model.Allergies|| mongoose.model("Allergies", AllergiesSchema);
