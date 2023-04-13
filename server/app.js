@@ -140,7 +140,7 @@ app.post("/add-medication", (request, response) => {
         dosage: request.body.dosage,
         frequency: request.body.frequency,
         when: request.body.when,
-        pill_count:request.body.pill_count,
+        pill_count: Number(request.body.pill_count),
     })
     medication
         .save()
@@ -184,35 +184,47 @@ app.post("/add-allergy", (request, response) => {
 });
 
 // get a particular medication
-app.get("/get-medication/:id", (request, response) => {
-    let db_connect = dbConnect.getDb("test");
-    let myquery = { _id: ObjectId(request.params.id) };
-    db_connect
-      .collection("medications")
-      .findOne(myquery, function (err, result) {
-        if (err) throw err;
-        response.json(result);
-      });
-  });
+app.get("/get-medication/:id", async (request, response) => {
+  try{
+    const data = await Medication.findById(request.params.id);
+    response.json(data);
+  }
+  catch(error){
+    response.status(500).json({message: error.message});
+  }
+});
+
+// get a particular allergy
+app.get("/get-allergy/:id", async (request, response) => {
+  try{
+    const data = await Allergy.findById(request.params.id);
+    response.json(data);
+  }
+  catch(error){
+    response.status(500).json({message: error.message});
+  }
+});
 
 // get all medications
-app.get("/get-medications", (request, response) => {
-    let db_connect = dbConnect.getDb("test");
-    let meds = db_connect.collection("medications");
-    meds.find({}).toArray(function (err, result) {
-        if (err) throw err;
-        response.json(result);
-    });
+app.get("/get-medications", async (request, response) => {
+  try{
+    const data = await Medication.find();
+    response.json(data);
+  }
+  catch(error){
+    response.status(500).json({message: error.message});
+  }
 });
 
 // get all allergies
-app.get("/get-allergies", (request, response) => {
-    let allergies = Allergy.find({});
-    console.log(allergies);
-    allergies.toArray(function (err, result) {
-        if (err) throw err;
-        response.json(result);
-    });
+app.get("/get-allergies", async (request, response) => {
+  try{
+    const data = await Allergy.find();
+    response.json(data);
+  }
+  catch(error){
+    response.status(500).json({message: error.message})
+  }
 });
 
 // free endpoint

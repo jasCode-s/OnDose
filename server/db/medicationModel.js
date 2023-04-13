@@ -17,7 +17,7 @@ const MedicationSchema = new mongoose.Schema({
         unique: false,
     },
     when: {
-        type: Date,
+        type: String,
         required: [true, "Please provide the times when you want to take the medication"],
         unique: false,
     },
