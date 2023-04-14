@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import theme from '../theme';
 
-const CustomListItem = ({ item, onDetailPress}) => {
+const CustomListItem = ({ item, onDetailPress, onEditPress}) => {
   
 
   return (
@@ -13,6 +13,20 @@ const CustomListItem = ({ item, onDetailPress}) => {
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.description}>{item.description}</Text>
       </View>
+      <TouchableOpacity
+        style={[
+          styles.editButton,
+        ]}
+          onPress={onEditPress}
+        >
+          <FontAwesome
+            name={'edit'}
+            size={35}
+            color={theme.colors.black}
+          />
+        </TouchableOpacity>
+     
+     
       
     </TouchableOpacity>
   );
@@ -45,6 +59,15 @@ const styles = StyleSheet.create({
     fontSize: theme.text.fontSize.small,
     color: theme.colors.gray,
   },
+  editButton: {
+    width: 71,
+    height: '100%',
+    borderTopRightRadius: theme.borderRadius,
+    borderBottomRightRadius: theme.borderRadius,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
 
 });
 

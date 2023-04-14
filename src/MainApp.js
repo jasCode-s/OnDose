@@ -13,6 +13,7 @@ import Settings from './screens/Settings';
 import Profile from './screens/Profile';
 import MedDetail from './screens/MedDetail';
 import AddMedication from './screens/AddMedication';
+import EditMedication from './screens/EditMedication';
 import CustomHeaderWithImage from './components/CustomHeaderWithImage';
 
 const Tab = createBottomTabNavigator();
@@ -97,6 +98,16 @@ const MainApp = () => {
             headerShown: true,
           })}
         />
+        <Stack.Screen
+          name="EditMedication"
+          component={EditMedication}
+          theme={theme}
+          options={({ navigation }) => ({
+            header: () => <CustomHeaderWithImage navigation={navigation} headerImage={require('../assets/OnDose.png')} showBackButton={true} />,
+            headerShown: true,
+          })}
+        />
+        
         
       </Stack.Navigator>
     </NavigationContainer>
