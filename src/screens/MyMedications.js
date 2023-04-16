@@ -11,35 +11,38 @@ import AddMedication from './AddMedication';
 const fakeData = [
   { __id: 1, title: 'Medication A', description: 'Take 2 Pills', completed: false, time: '8:00 AM', 
   ingredients: 'Melatonin 5mg, Xylitol, Cellulose Gum, Soy Polysacchrides, Maltodertrin, Dextrose',
-  dosages: 'Take 2 pills each time. Once per day.',
+  dosages: '2 pills each time',
+  frequency: '1 time/day',
   sideEffects: 'Vivid dreams or nightmares; Short-term feelings of depression; Irritability, Stomach cramps; Diarrhea; Constipation; Decreased appetite', 
   interaction: 'No major interactions is found in current prescription. No major interactions is found with my allergies.',
   image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
   { __id: 2, title: 'Medication B', description: 'Take 1 Pill', completed: false, time: '6:00 PM', 
   ingredients: 'Zincum aceticum 2x, Zincum gulconicum 1x',
-  dosages: 'Take 1 pill each time. Two times a day.',
+  dosages: '1 pill each time',
+  frequency: ' 2 times/day',
   sideEffects: 'burning or stinging; irritation inside the nose; runny nose; sneezing',
   interaction: 'No major interactions is found in current prescription. No major interactions is found with my allergies.',
   image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
   { __id: 3, title: 'Medication C', description: 'Take 1 Pill', completed: false, time: '6:00 PM', 
   ingredients:'Acetaminophen 500mg',
-  dosages: 'Take 1 pill per day.',
+  dosages: '1 pill each time',
+  frequency: '1 time/day',
   sideEffects: 'burning or stinging; irritation inside the nose; runny nose; sneezing',
   interaction: 'No major interactions is found in current prescription. No major interactions is found with my allergies.',
   image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
 ];
 
-
 const MedicationItem = ({ medication }) => (
   <View style={styles.medicationItem}>
     <Image source={medication.image} style={styles.medicationImage} />
     <View style={styles.medicationInfo}>
-      <Text style={styles.medicationTitle}>{medication.name}</Text>
-      <Text style={styles.medicationDosage}>{medication.dosage}</Text>
-      <Text style={styles.medicationDosage}>{medication.__id}</Text>
-      <Text style={styles.medicationDosage}>{medication.ingredients}</Text>
-      <Text style={styles.medicationDosage}>{medication.sideEffects}</Text>
-      <Text style={styles.medicationDosage}>{medication.interaction}</Text>
+      <Text style={styles.medicationTitle}>{medication.title}</Text>
+      <Text style={styles.medicationDetail}>{medication.dosage}</Text>
+      <Text style={styles.medicationDetail}>{medication.id}</Text>
+      <Text style={styles.medicationDetail}>{medication.ingredients}</Text>
+      <Text style={styles.medicationDetail}>{medication.sideEffects}</Text>
+      <Text style={styles.medicationDetail}>{medication.interaction}</Text>
+      <Text style={styles.medicationDetail}>{medication.frequency}</Text>
     </View>
   </View>
 );
@@ -85,6 +88,10 @@ const MyMedications = ({ navigation }) => {
     navigation.navigate('MedDetail', { medication });
   };
 
+  const handleEditPress = (medication) => {
+    navigation.navigate('EditMedication', { medication });
+  };
+
 
    // group Med by ID
    const groupMeds = (Meds) => {
@@ -119,7 +126,17 @@ const MyMedications = ({ navigation }) => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.idGroupContainer}>
-            {medicationList()}
+            {item.Meds.map((Med) => (
+              <CustomListItem
+                key={Med.id}
+                item={Med}
+                onDetailPress={() => {
+                  navigation.navigate('MedDetail', { medication: Med});
+                }}
+                onEditPress={() => handleEditPress(Med)}
+                
+              />
+            ))}
           </View>
         )}
       />
@@ -200,7 +217,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   
-  medicationDosage: {
+  medicationDetail: {
     fontSize: 15,
   },
 
