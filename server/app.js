@@ -12,6 +12,8 @@ const Allergy = require("./db/allergyModel");
 const Medication = require("./db/medicationModel");
 const auth = require("./db/auth");
 
+const ObjectId = require("mongodb").ObjectId;
+
 // execute database connection
 dbConnect();
 
@@ -226,6 +228,27 @@ app.get("/get-allergies", async (request, response) => {
     response.status(500).json({message: error.message})
   }
 });
+
+// Update a medication by id
+app.post("/update-medication/:id", async (request, response) => {
+  let myquery = { _id: new ObjectId(request.params.id) };
+  let newvalues = {
+    $set: {
+      name: request.body.name,
+      dosage: request.body.dosage,
+      frequency: request.body.frequency,
+      when: request.body.when,
+      pill_count: Number(request.body.pill_count),
+    },
+  };
+  try {
+    const data = await Medication.updateOne(myquery, newvalues);
+    response.status(201).send({ message: "Medication updated succesfully" });
+  }
+  catch(error) {
+    response.status(500).json({message: error.message});
+  }
+ });
 
 // free endpoint
 app.get("/free-endpoint", (request, response) => {
