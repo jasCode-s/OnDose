@@ -189,7 +189,7 @@ app.post("/add-allergy", (request, response) => {
 app.get("/get-medication/:id", async (request, response) => {
   try{
     const data = await Medication.findById(request.params.id);
-    response.json(data);
+    response.status(201).json(data);
   }
   catch(error){
     response.status(500).json({message: error.message});
@@ -200,7 +200,7 @@ app.get("/get-medication/:id", async (request, response) => {
 app.get("/get-allergy/:id", async (request, response) => {
   try{
     const data = await Allergy.findById(request.params.id);
-    response.json(data);
+    response.status(201).json(data);
   }
   catch(error){
     response.status(500).json({message: error.message});
@@ -211,7 +211,7 @@ app.get("/get-allergy/:id", async (request, response) => {
 app.get("/get-medications", async (request, response) => {
   try{
     const data = await Medication.find();
-    response.json(data);
+    response.status(201).json(data);
   }
   catch(error){
     response.status(500).json({message: error.message});
@@ -222,7 +222,7 @@ app.get("/get-medications", async (request, response) => {
 app.get("/get-allergies", async (request, response) => {
   try{
     const data = await Allergy.find();
-    response.json(data);
+    response.status(201).json(data);
   }
   catch(error){
     response.status(500).json({message: error.message})
