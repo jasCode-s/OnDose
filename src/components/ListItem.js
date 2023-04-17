@@ -16,7 +16,7 @@ const CustomListItem = ({ item, onDetailPress, onCompletePress }) => {
       <TouchableOpacity style={styles.container} onPress={() => setIsCollapsed(!isCollapsed)}>
         <Image source={{ uri: item.image }} style={styles.image} />
         <View style={styles.textContainer}>
-          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.title}>{item.name}</Text>
           <Text style={styles.description}>{item.description}</Text>
         </View>
         <TouchableOpacity

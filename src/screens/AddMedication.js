@@ -6,15 +6,15 @@ import { FontAwesome } from '@expo/vector-icons';
 
 
 const AddMedication = ({ navigation }) => {
-  const [title, setTitle] = useState('');
-  const [dosages, setDosages] = useState('');
+  const [name, setTitle] = useState('');
+  const [dosage, setDosages] = useState('');
   const [frequency, setFrequency] = useState('');
   const [time, setTime] = useState('');
   const [pickerVisible, setPickerVisible] = useState({ dosages: false, frequency: false, time: false });
 
   const handleSave = () => {
     // Create a new medication object and go back to the previous screen
-    const newMedication = { title, dosages, frequency, time };
+    const newMedication = { title, dosage, frequency, time };
     navigation.navigate('MyMedications', { newMedication });
   };
 
@@ -44,7 +44,7 @@ const AddMedication = ({ navigation }) => {
           <Text style={styles.label}>Medication Name</Text>
           <View style={styles.titleInputContainer}>
             <TextInput
-              value={title}
+              value={name}
               onChangeText={setTitle}
               style={styles.titleInput}
               placeholder="e.g. Tylenol"
@@ -61,7 +61,7 @@ const AddMedication = ({ navigation }) => {
                     onPress={() => togglePicker(field)}
                 >
               <Text style={styles.titleInput}>
-                {field === 'dosages' ? (dosages ? `${dosages} pill(s)` : '') : field === 'frequency' ? (frequency ? `${frequency} time(s) per day` : '') : time}
+                {field === 'dosages' ? (dosage ? `${dosage} pill(s)` : '') : field === 'frequency' ? (frequency ? `${frequency} time(s) per day` : '') : time}
               </Text>
 
             </TouchableOpacity>

@@ -36,14 +36,15 @@ const MedicationItem = ({ medication }) => (
   <View style={styles.medicationItem}>
     <Image source={medication.image} style={styles.medicationImage} />
     <View style={styles.medicationInfo}>
-      <Text style={styles.medicationTitle}>{medication.title}</Text>
+      <Text style={styles.medicationTitle}>{medication.name}</Text>
       <Text style={styles.medicationDetail}>{medication.dosage}</Text>
-      <Text style={styles.medicationDetail}>{medication.id}</Text>
+      <Text style={styles.medicationDetail}>{medication.__id}</Text>
       <Text style={styles.medicationDetail}>{medication.ingredients}</Text>
       <Text style={styles.medicationDetail}>{medication.sideEffects}</Text>
       <Text style={styles.medicationDetail}>{medication.interaction}</Text>
       <Text style={styles.medicationDetail}>{medication.frequency}</Text>
     </View>
+    <FontAwesome5 name="chevron-right" style={styles.medicationArrow} />
   </View>
 );
 
@@ -52,8 +53,8 @@ const MyMedications = ({ navigation }) => {
 
   useEffect(() =>{
     async function getMedications() {
-      const response = await fetch(`https://eighty-carrots-roll-67-244-21-223.loca.lt/get-medications/`);
-      
+      const response = await fetch(`https://modern-kids-juggle-67-244-21-223.loca.lt/get-medications`);
+
       if(!response.ok) {
         const message = `An error occured: ${response.statusText}$`;
         console.log(response.json());
@@ -67,22 +68,7 @@ const MyMedications = ({ navigation }) => {
 
     getMedications();
     return;
-  }, [Meds.length]);
-
-  // This method will map out the records on the table
- function medicationList() {
-  return Meds.map((med) => {
-    return (
-      <MedicationItem
-        medication={med}
-        key={med._id}
-        onDetailPress={() => {
-          navigation.navigate('MedDetail', { medication: Med});
-        }}
-      />
-    );
-  });
-}
+  }, []);
 
   const handleMedicationPress = (medication) => {
     navigation.navigate('MedDetail', { medication });
@@ -96,11 +82,11 @@ const MyMedications = ({ navigation }) => {
    // group Med by ID
    const groupMeds = (Meds) => {
     const groups = Meds.reduce((acc, Med) => {
-      const group = acc.find((g) => g.id === Med.id);
+      const group = acc.find((g) => g.id === Med.__id);
       if (group) {
         group.Meds.push(Med);
       } else {
-        acc.push({id: Med.id, Meds: [Med] });
+        acc.push({id: Med.__id, Meds: [Med] });
       }
       return acc;
     }, []);
@@ -126,10 +112,10 @@ const MyMedications = ({ navigation }) => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.idGroupContainer}>
-            {item.Meds.map((Med) => (
+            {Meds.map((Med) => (
               <CustomListItem
-                key={Med.id}
                 item={Med}
+                key={Med.__id}
                 onDetailPress={() => {
                   navigation.navigate('MedDetail', { medication: Med});
                 }}

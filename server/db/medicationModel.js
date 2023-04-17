@@ -26,6 +26,36 @@ const MedicationSchema = new mongoose.Schema({
         required: false,
         unique: false,
     },
+    completed: {
+        type: Boolean,
+        required: true,
+        unique: false,
+    },
+    ingredients: {
+        type: String,
+        required: true,
+        unique: false,
+    },
+    sideEffects: {
+        type: String,
+        required: true,
+        unique: false,
+    },
+    image: {
+        type: String,
+        required: true,
+        unique: false,
+    },
+    description: {
+        type: String,
+        required: true,
+        unique: false,
+    },
+    interaction: {
+        type: String,
+        required: true,
+        unique: false,
+    },
 });
 
 module.exports = mongoose.model.Medications|| mongoose.model("Medications", MedicationSchema);

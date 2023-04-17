@@ -113,7 +113,7 @@ app.post("/login", (request, response) => {
           );
 
           //   return success response
-          response.status(200).send({
+          response.status(201).send({
             message: "Login Successful",
             username: user.username,
             token,
@@ -136,6 +136,42 @@ app.post("/login", (request, response) => {
     });
 });
 
+const ingredients = {
+  "lipitor": "Atorvastatin",
+  "aspirin": "Aspirin",
+  "cozaar": "Losartan potassiums",
+  "metformin": "Metformin hydochloride"
+}
+
+const sideEffects = {
+  "lipitor": "nausea, headaches, nosebleeds, sore throat, cold-like symptoms, constipation, diarrhea",
+  "aspirin": "abdominal pain/discomfort, bloody urine, chest pain, confusion, constipation, fever, etc.",
+  "cozaar": "burning/tingling feeling, confusion, difficulty breathing, dizziness, irregular heartbeat, stomach pain, etc.",
+  "metformin": "nausea, vomitting, diarrhea, stomach ache, lost of appetite, metallic taste"
+}
+
+function getIngredients(med) {
+  if(med.toLowerCase() in ingredients) return ingredients[med.toLowerCase()];
+  return "Ingredients";
+}
+
+function getInteraction(med) {
+  return 'No major interactions found in current prescription. No major interactions found with my allergies.';
+}
+
+function getSideEffects(med) {
+  if(med.toLowerCase() in sideEffects) return sideEffects[med.toLowerCase()];
+  return "Side effect currently unavailable";
+}
+
+function getImage(med) {
+  return 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available';
+}
+
+function getDescription(dosage) {
+  return `Take ${dosage}`;
+}
+
 app.post("/add-medication", (request, response) => {
     const medication = new Medication({
         name: request.body.name,
@@ -143,6 +179,12 @@ app.post("/add-medication", (request, response) => {
         frequency: request.body.frequency,
         when: request.body.when,
         pill_count: Number(request.body.pill_count),
+        completed: false,
+        ingredients: getIngredients(request.body.name),
+        interaction: getInteraction(request.body.name),
+        sideEffects: getSideEffects(request.body.name),
+        image: getImage(request.body.name),
+        description: getDescription(request.body.dosage),
     })
     medication
         .save()
@@ -239,6 +281,7 @@ app.post("/update-medication/:id", async (request, response) => {
       frequency: request.body.frequency,
       when: request.body.when,
       pill_count: Number(request.body.pill_count),
+      completed: Boolean(request.body.completed),
     },
   };
   try {

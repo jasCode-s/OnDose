@@ -10,16 +10,16 @@ import * as Progress from 'react-native-progress';
 
 const Reminders = () => {
   const fakeData = [
-    { id: 1, title: 'Medication A', description: 'Take 2 Pills', completed: false, time: '8:00 AM', timesLeft: 1,
+    { id: 1, name: 'Medication A', description: 'Take 2 Pills', completed: false, time: '8:00 AM', timesLeft: 1,
     sideEffects: 'Vivid dreams or nightmares; Short-term feelings of depression; Irritability, Stomach cramps; Diarrhea; Constipation; Decreased appetite', 
     image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
-    { id: 2, title: 'Medication B', description: 'Take 1 Pill', completed: false, time: '6:00 PM', 
+    { id: 2, name: 'Medication B', description: 'Take 1 Pill', completed: false, time: '6:00 PM', 
     sideEffects: 'burning or stinging; irritation inside the nose; runny nose; sneezing', timesLeft: 2,
     image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
-    { id: 3, title: 'Medication C', description: 'Take 1 Pill', completed: false, time: '6:00 PM', timesLeft: 1,
+    { id: 3, name: 'Medication C', description: 'Take 1 Pill', completed: false, time: '6:00 PM', timesLeft: 1,
     sideEffects:'red, peeling or blistering skin; rash; itching; swelling of the face, throat, tongue, lips, eyes, hands, feet, ankles, or lower legs; hoarseness; difficulty breathing or swallowing', 
     image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
-    { id: 4, title: 'Medication B', description: 'Take 1 Pill', completed: false, time: '8:30 PM', 
+    { id: 4, name: 'Medication B', description: 'Take 1 Pill', completed: false, time: '8:30 PM', 
     sideEffects: 'burning or stinging; irritation inside the nose; runny nose; sneezing', timesLeft: 2,
     image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
   ];
@@ -63,7 +63,7 @@ const Reminders = () => {
     setMeds((prevMeds) =>
       prevMeds.map((Med) => 
         ((Med.id === MedId) && canTake) ? { ...Med, completed: !Med.completed } : Med).map((Med) =>
-          ((Med.title === MedTitle) && canTake) ? { ...Med, timesLeft: MedCompleted ? Med.timesLeft + 1 : Med.timesLeft - 1 } : Med
+          ((Med.name === MedTitle) && canTake) ? { ...Med, timesLeft: MedCompleted ? Med.timesLeft + 1 : Med.timesLeft - 1 } : Med
         )
     );
   };
@@ -137,7 +137,7 @@ const Reminders = () => {
                 <CustomListItem
                   key={Med.id}
                   item={Med}
-                  onCompletePress={() => handleCompletePress(Med.id, Med.time, Med.title, Med.completed)}
+                  onCompletePress={() => handleCompletePress(Med.id, Med.time, Med.name, Med.completed)}
                 />
               ))}
             </View>

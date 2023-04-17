@@ -9,7 +9,7 @@ const CustomListDetail = ({ item }) => {
     <View style={styles.container} >
       <Image source={{ uri: item.image }} style={styles.image} />
       <View style={styles.textContainer}>
-        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.description}>{item.description}</Text>
       </View>
       </View>
