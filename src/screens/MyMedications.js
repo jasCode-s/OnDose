@@ -6,6 +6,7 @@ import theme from '../theme';
 import CustomListItem from '../components/ListMedOnly';
 import MedDetail from './MedDetail';
 import AddMedication from './AddMedication';
+import { SERVER_URL } from './ApiCalls';
 
 
 const fakeData = [
@@ -53,10 +54,10 @@ const MyMedications = ({ navigation }) => {
 
   useEffect(() =>{
     async function getMedications() {
-      const response = await fetch(`https://modern-kids-juggle-67-244-21-223.loca.lt/get-medications`);
+      const response = await fetch(`${SERVER_URL}get-medications`);
 
       if(!response.ok) {
-        const message = `An error occured: ${response.statusText}$`;
+        const message = `An error occured: ${response.statusText}`;
         console.log(response.json());
         window.alert(message);
         return;
@@ -108,11 +109,11 @@ const MyMedications = ({ navigation }) => {
       </Text>
 
       <FlatList
-        data={Meds}
+        data={groupedMeds}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.idGroupContainer}>
-            {Meds.map((Med) => (
+            {item.Meds.map((Med) => (
               <CustomListItem
                 item={Med}
                 key={Med.__id}

@@ -1,0 +1,1 @@
+export const SERVER_URL = "https://chilly-coats-smile-73-154-134-130.loca.lt/"
