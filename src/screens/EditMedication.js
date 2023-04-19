@@ -3,18 +3,34 @@ import { View, TextInput, StyleSheet, Button, Text, TouchableOpacity } from 'rea
 import theme from '../theme';
 import { Picker } from '@react-native-picker/picker';
 import { FontAwesome } from '@expo/vector-icons';
+import { SERVER_URL } from './ApiCalls';
+import axios from 'axios';
 
 const EditMedication = ({ route, navigation }) => {
   const { medication } = route.params;
-  const [title, setTitle] = useState(medication.title);
-  const [dosages, setDosages] = useState(medication.dosages);
-  const [frequency, setFrequency] = useState(medication.frequency);
-  const [time, setTime] = useState(medication.time);
-  const [pickerVisible, setPickerVisible] = useState({ dosages: false, frequency: false, time: false });
+  const [name, setName] = useState(medication.name);
+  const [dosage, setDosages] = useState(parseInt(''));
+  const [frequency, setFrequency] = useState('');
+  const [time, setTime] = useState('');
+  const [pickerVisible, setPickerVisible] = useState({ dosage: false, frequency: false, time: false });
 
-  const handleSave = () => {
+  async function handleSave() {
     // Update the medication object and go back to the previous screen
-    navigation.navigate('MyMedications', { updatedMedication: { ...medication, title, dosages, frequency, time } });
+    // Create a new medication object and go back to the previous screen
+    const newMedication = { "name": name, "dosage": `${dosage} pills`, "frequency": `${frequency} time(s) per day`, "time": time , "pill_count": "15"};
+    console.log(`${medication._id}`);
+    const response = await axios.post(`${SERVER_URL}update-medication/${medication._id}`, JSON.stringify(newMedication), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if(response.status != 200) {
+      const message = `An error occured`;
+      window.alert(message);
+      console.log(response.status);
+      return;
+    }
+    navigation.navigate('MyMedications');
     
   };
 
@@ -44,15 +60,15 @@ const EditMedication = ({ route, navigation }) => {
           <Text style={styles.label}>Medication Name</Text>
           <View style={styles.titleInputContainer}>
             <TextInput
-              value={title}
-              onChangeText={setTitle}
+              value={name}
+              onChangeText={setName}
               style={styles.titleInput}
               placeholder="Medication name"
             />
           </View>
         </View>
 
-        {['dosages', 'frequency', 'time'].map((field) => (
+        {['dosage', 'frequency', 'time'].map((field) => (
           <View key={field}>
              <View style={styles.inputContainer}>
                 <Text style={styles.label}>{field.charAt(0).toUpperCase() + field.slice(1)}</Text>
@@ -66,10 +82,10 @@ const EditMedication = ({ route, navigation }) => {
             {pickerVisible[field] && (
               <View style={styles.pickerContainer}>
                 <Picker
-                    selectedValue={medication[field]}
+                    selectedValue={eval[field]}
                     onValueChange={(itemValue) => {
                     setPickerVisible({ ...pickerVisible, [field]: false });
-                    if (field === 'dosages') {
+                    if (field === 'dosage') {
                         setDosages(itemValue);
                     } else if (field === 'frequency') {
                         setFrequency(itemValue);
@@ -79,7 +95,7 @@ const EditMedication = ({ route, navigation }) => {
                     }}
                     style={styles.picker}
                 >
-                    {field === 'dosages' &&
+                    {field === 'dosage' &&
                     [1, 2, 3, 4, 5].map((value) => (
                         <Picker.Item key={value} label={`${value} pill(s)`} value={value} />
                     ))}

@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import { View, StyleSheet, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import theme from '../theme';
 import CustomListItem from '../components/ListMedOnly';
 import MedDetail from './MedDetail';
@@ -52,24 +52,24 @@ const MedicationItem = ({ medication }) => (
 const MyMedications = ({ navigation }) => {
   const [Meds, setMeds] = useState([]);
 
-  useEffect(() =>{
-    async function getMedications() {
-      const response = await fetch(`${SERVER_URL}get-medications`);
+  useFocusEffect(
+    React.useCallback(() =>{
+      async function getMedications() {
+        const response = await fetch(`${SERVER_URL}get-medications`);
 
-      if(!response.ok) {
-        const message = `An error occured: ${response.statusText}`;
-        console.log(response.json());
-        window.alert(message);
-        return;
+        if(!response.ok) {
+          const message = `An error occured: ${response.statusText}`;
+          console.log(response.json());
+          window.alert(message);
+          return;
+        }
+
+        const Meds = await response.json();
+        setMeds(Meds);
       }
-
-      const Meds = await response.json();
-      setMeds(Meds);
-    }
-
-    getMedications();
-    return;
-  }, []);
+      getMedications();
+    }, [])
+  );
 
   const handleMedicationPress = (medication) => {
     navigation.navigate('MedDetail', { medication });

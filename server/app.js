@@ -139,7 +139,7 @@ app.post("/login", (request, response) => {
 const ingredients = {
   "lipitor": "Atorvastatin",
   "aspirin": "Aspirin",
-  "cozaar": "Losartan potassiums",
+  "cozaar": "Losartan potassium",
   "metformin": "Metformin hydochloride"
 }
 
@@ -151,6 +151,7 @@ const sideEffects = {
 }
 
 function getIngredients(med) {
+  if(!med) return;
   if(med.toLowerCase() in ingredients) return ingredients[med.toLowerCase()];
   return "Ingredients";
 }
@@ -172,12 +173,16 @@ function getDescription(dosage) {
   return `Take ${dosage}`;
 }
 
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 app.post("/add-medication", (request, response) => {
     const medication = new Medication({
-        name: request.body.name,
+        name: capitalize(request.body.name),
         dosage: request.body.dosage,
         frequency: request.body.frequency,
-        when: request.body.when,
+        time: request.body.time,
         pill_count: Number(request.body.pill_count),
         completed: false,
         ingredients: getIngredients(request.body.name),
@@ -190,7 +195,7 @@ app.post("/add-medication", (request, response) => {
         .save()
         // return success if the new user is added to the database successfully
         .then((result) => {
-          response.status(201).send({
+          response.status(200).send({
             message: "Medication Created Successfully",
             result,
           });
@@ -213,7 +218,7 @@ app.post("/add-allergy", (request, response) => {
         .save()
         // return success if the new user is added to the database successfully
         .then((result) => {
-          response.status(201).send({
+          response.status(200).send({
             message: "Allergy Added Successfully",
             result,
           });
@@ -231,7 +236,7 @@ app.post("/add-allergy", (request, response) => {
 app.get("/get-medication/:id", async (request, response) => {
   try{
     const data = await Medication.findById(request.params.id);
-    response.status(201).json(data);
+    response.status(200).json(data);
   }
   catch(error){
     response.status(500).json({message: error.message});
@@ -242,7 +247,7 @@ app.get("/get-medication/:id", async (request, response) => {
 app.get("/get-allergy/:id", async (request, response) => {
   try{
     const data = await Allergy.findById(request.params.id);
-    response.status(201).json(data);
+    response.status(200).json(data);
   }
   catch(error){
     response.status(500).json({message: error.message});
@@ -253,7 +258,7 @@ app.get("/get-allergy/:id", async (request, response) => {
 app.get("/get-medications", async (request, response) => {
   try{
     const data = await Medication.find();
-    response.status(201).json(data);
+    response.status(200).json(data);
   }
   catch(error){
     response.status(500).json({message: error.message});
@@ -264,7 +269,7 @@ app.get("/get-medications", async (request, response) => {
 app.get("/get-allergies", async (request, response) => {
   try{
     const data = await Allergy.find();
-    response.status(201).json(data);
+    response.status(200).json(data);
   }
   catch(error){
     response.status(500).json({message: error.message})
@@ -286,7 +291,7 @@ app.post("/update-medication/:id", async (request, response) => {
   };
   try {
     const data = await Medication.updateOne(myquery, newvalues);
-    response.status(201).send({ message: "Medication updated succesfully" });
+    response.status(200).send({ message: "Medication updated succesfully" });
   }
   catch(error) {
     response.status(500).json({message: error.message});

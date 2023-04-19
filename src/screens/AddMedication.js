@@ -16,8 +16,7 @@ const AddMedication = ({ navigation }) => {
 
   async function handleSave() {
     // Create a new medication object and go back to the previous screen
-    const newMedication = { "name": name, "dosage": `${dosage} pills`, "frequency": `${frequency} time(s) per day`, "when": time , "pill_count": "15"};
-    console.log(JSON.stringify(newMedication));
+    const newMedication = { "name": name, "dosage": `${dosage} pills`, "frequency": `${frequency} time(s) per day`, "time": time , "pill_count": "15"};
     const response = await axios.post(`${SERVER_URL}add-medication`, JSON.stringify(newMedication), {
       headers: {
         'Content-Type': 'application/json'
@@ -26,7 +25,7 @@ const AddMedication = ({ navigation }) => {
     if(response.status != 200) {
       const message = `An error occured`;
       window.alert(message);
-        console.log(response.status);
+      console.log(response.status);
       return;
     }
     navigation.navigate('MyMedications');
@@ -117,8 +116,9 @@ const AddMedication = ({ navigation }) => {
         ))}
       </View>
 
-      <Button style={styles.button} onPress={handleSave} title="Save">
-      </Button>
+      <TouchableOpacity style={styles.button} onPress={handleSave}>
+        <Text style={styles.buttonText}>Save</Text>
+    </TouchableOpacity>
 
     </View>
   );
@@ -197,16 +197,18 @@ const styles = StyleSheet.create({
   },
 
   button: {
-      backgroundColor: theme.colors.black,
-      height: 60,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: 10,
-      marginTop: 10,
-      borderRadius: 18,
-      fontWeight: 'bold',
-      fontSize: 20,
-      color: theme.colors.white,
+    backgroundColor: theme.colors.black,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+    marginTop: 10,
+    borderRadius: 18
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: theme.colors.white,
   }
   
 });
