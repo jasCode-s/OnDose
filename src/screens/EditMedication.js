@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Button, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import theme from '../theme';
 import { Picker } from '@react-native-picker/picker';
 import { FontAwesome } from '@expo/vector-icons';
@@ -18,9 +18,26 @@ const EditMedication = ({ route, navigation }) => {
     
   };
 
+  const handleDelete = () => {
+    // Update the medication object and go back to the previous screen
+    navigation.navigate('MyMedications', { updatedMedication: { ...medication, title, dosages, frequency, time } });
+    
+  };
+
   const togglePicker = (field) => {
     setPickerVisible({ ...pickerVisible, [field]: !pickerVisible[field] });
   };
+
+  const getDisplayText = (field) => {
+    if (field === 'dosages') {
+      return `${dosages} pill(s) each time`;
+    } else if (field === 'frequency') {
+      return `${frequency} time(s) per day`;
+    } else {
+      return time;
+    }
+  };
+  
 
   return (
     <View style={styles.container}>
@@ -60,7 +77,9 @@ const EditMedication = ({ route, navigation }) => {
                     style={styles.titleInputContainer}
                     onPress={() => togglePicker(field)}
                 >
-              <Text style={styles.titleInput}>{medication[field]}</Text>
+              <Text style={styles.titleInput}> 
+                  {getDisplayText(field)}
+              </Text>
             </TouchableOpacity>
             </View>
             {pickerVisible[field] && (
@@ -99,11 +118,17 @@ const EditMedication = ({ route, navigation }) => {
           </View>
         ))}
       </View>
+      
 
-      <TouchableOpacity style={styles.button} onPress={handleSave}>
-        <Text style={styles.buttonText}>Save</Text>
-    </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleSave}>
+          <Text style={styles.buttonText}>Save</Text>
+        </TouchableOpacity>
 
+        <TouchableOpacity style={styles.button} onPress={handleDelete}>
+          <Text style={styles.buttonText}>Delete</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -171,15 +196,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         top: -6,
       },
-
+    
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 10,
+    },
     button: {
         backgroundColor: theme.colors.black,
         height: 60,
         alignItems: 'center',
         justifyContent: 'center',
+        flex: 1,
         marginBottom: 10,
         marginTop: 10,
-        borderRadius: 18
+        borderRadius: 18,
+        marginHorizontal: 5,
       },
       buttonText: {
         fontWeight: 'bold',
