@@ -16,7 +16,7 @@ const MedicationSchema = new mongoose.Schema({
         required: [true, "Please provide the frequency to take the medication"],
         unique: false,
     },
-    when: {
+    time: {
         type: String,
         required: [true, "Please provide the times when you want to take the medication"],
         unique: false,
@@ -29,6 +29,11 @@ const MedicationSchema = new mongoose.Schema({
     completed: {
         type: Boolean,
         required: true,
+        unique: false,
+    },
+    timesLeft: {
+        type: Number,
+        required: false,
         unique: false,
     },
     ingredients: {

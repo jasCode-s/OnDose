@@ -69,7 +69,7 @@ const MyMedications = ({ navigation }) => {
       }
       getMedications();
     }, [])
-  );
+  )};
 
   const handleMedicationPress = (medication) => {
     navigation.navigate('MedDetail', { medication });
@@ -83,11 +83,11 @@ const MyMedications = ({ navigation }) => {
    // group Med by ID
    const groupMeds = (Meds) => {
     const groups = Meds.reduce((acc, Med) => {
-      const group = acc.find((g) => g.id === Med.__id);
+      const group = acc.find((g) => g.id === Med._id);
       if (group) {
         group.Meds.push(Med);
       } else {
-        acc.push({id: Med.__id, Meds: [Med] });
+        acc.push({id: Med._id, Meds: [Med] });
       }
       return acc;
     }, []);
@@ -116,7 +116,7 @@ const MyMedications = ({ navigation }) => {
             {item.Meds.map((Med) => (
               <CustomListItem
                 item={Med}
-                key={Med.__id}
+                key={Med._id}
                 onDetailPress={() => {
                   navigation.navigate('MedDetail', { medication: Med});
                 }}

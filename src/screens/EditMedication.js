@@ -82,7 +82,7 @@ const EditMedication = ({ route, navigation }) => {
             {pickerVisible[field] && (
               <View style={styles.pickerContainer}>
                 <Picker
-                    selectedValue={eval[field]}
+                    selectedValue={medication[field]}
                     onValueChange={(itemValue) => {
                     setPickerVisible({ ...pickerVisible, [field]: false });
                     if (field === 'dosage') {

@@ -184,6 +184,7 @@ app.post("/add-medication", (request, response) => {
         frequency: request.body.frequency,
         time: request.body.time,
         pill_count: Number(request.body.pill_count),
+        timesLeft: Number(parseInt(request.body.frequency)),
         completed: false,
         ingredients: getIngredients(request.body.name),
         interaction: getInteraction(request.body.name),
@@ -285,8 +286,8 @@ app.post("/update-medication/:id", async (request, response) => {
       dosage: request.body.dosage,
       frequency: request.body.frequency,
       when: request.body.when,
-      pill_count: Number(request.body.pill_count),
       completed: Boolean(request.body.completed),
+      timesLeft: Number(request.body.timesLeft),
     },
   };
   try {
