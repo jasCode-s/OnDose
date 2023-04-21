@@ -4,6 +4,7 @@ import theme from '../theme';
 import { Picker } from '@react-native-picker/picker';
 import { FontAwesome } from '@expo/vector-icons';
 
+
 const EditMedication = ({ route, navigation }) => {
   const { medication } = route.params;
   const [title, setTitle] = useState(medication.title);

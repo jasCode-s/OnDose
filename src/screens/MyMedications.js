@@ -19,7 +19,7 @@ const fakeData = [
   { id: 2, title: 'Medication B', description: 'Take 1 Pill', completed: false, time: '6:00 PM', 
   ingredients: 'Zincum aceticum 2x, Zincum gulconicum 1x',
   dosages: '1',
-  frequency: ' 2',
+  frequency: '2',
   sideEffects: 'burning or stinging; irritation inside the nose; runny nose; sneezing',
   interaction: 'No major interactions is found in current prescription. No major interactions is found with my allergies.',
   image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
