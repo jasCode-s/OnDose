@@ -9,7 +9,7 @@ import axios from 'axios';
 const EditMedication = ({ route, navigation }) => {
   const { medication } = route.params;
   const [name, setName] = useState(medication.name);
-  const [dosage, setDosages] = useState(parseInt(''));
+  const [dosage, setDosages] = useState('');
   const [frequency, setFrequency] = useState('');
   const [time, setTime] = useState('');
   const [pickerVisible, setPickerVisible] = useState({ dosage: false, frequency: false, time: false });
@@ -82,7 +82,7 @@ const EditMedication = ({ route, navigation }) => {
             {pickerVisible[field] && (
               <View style={styles.pickerContainer}>
                 <Picker
-                    selectedValue={medication[field]}
+                    selectedValue={eval[field]}
                     onValueChange={(itemValue) => {
                     setPickerVisible({ ...pickerVisible, [field]: false });
                     if (field === 'dosage') {
