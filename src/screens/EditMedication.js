@@ -10,16 +10,15 @@ import axios from 'axios';
 const EditMedication = ({ route, navigation }) => {
   const { medication } = route.params;
   const [name, setName] = useState(medication.name);
-  const [dosage, setDosages] = useState('');
-  const [frequency, setFrequency] = useState('');
-  const [time, setTime] = useState('');
+  const [dosage, setDosages] = useState(medication.dosage);
+  const [frequency, setFrequency] = useState(medication.frequency);
+  const [time, setTime] = useState(medication.time);
   const [pickerVisible, setPickerVisible] = useState({ dosage: false, frequency: false, time: false });
 
   async function handleSave() {
     // Update the medication object and go back to the previous screen
     // Create a new medication object and go back to the previous screen
-    const newMedication = { "name": name, "dosage": `${dosage} pills`, "frequency": `${frequency} time(s) per day`, "time": time , "pill_count": "15"};
-    console.log(`${medication._id}`);
+    const newMedication = { "name": name, "dosage": `${dosage} pills`, "frequency": `${frequency} time(s) per day`, "time": time , "pill_count": "15", "timesLeft": medication.timesLeft, "completed": medication.completed};
     const response = await axios.post(`${SERVER_URL}update-medication/${medication._id}`, JSON.stringify(newMedication), {
       headers: {
         'Content-Type': 'application/json'
@@ -35,10 +34,19 @@ const EditMedication = ({ route, navigation }) => {
     
   };
 
-  const handleDelete = () => {
-    // Update the medication object and go back to the previous screen
-    navigation.navigate('MyMedications', { updatedMedication: { ...medication, title, dosages, frequency, time } });
-    
+  async function handleDelete() {
+    const response = await axios.post(`${SERVER_URL}delete-medication/${medication._id}`, '', {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if(response.status != 200) {
+      const message = `An error occured`;
+      window.alert(message);
+      console.log(response.status);
+      return;
+    }
+    navigation.navigate('MyMedications');
   };
 
   const togglePicker = (field) => {
@@ -46,8 +54,8 @@ const EditMedication = ({ route, navigation }) => {
   };
 
   const getDisplayText = (field) => {
-    if (field === 'dosages') {
-      return `${dosages} pill(s) each time`;
+    if (field === 'dosage') {
+      return `${dosage} pill(s) each time`;
     } else if (field === 'frequency') {
       return `${frequency} time(s) per day`;
     } else {

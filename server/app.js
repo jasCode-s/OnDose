@@ -299,6 +299,18 @@ app.post("/update-medication/:id", async (request, response) => {
   }
  });
 
+ // delete a particular medication
+app.post("/delete-medication/:id", async (request, response) => {
+  try{
+    let myquery = { _id: new ObjectId(request.params.id) };
+    const data = await Medication.deleteOne(myquery);
+    response.status(200).send({ message: "Medication deleted succesfully" });
+  }
+  catch(error){
+    response.status(500).json({message: error.message});
+  }
+});
+
 // free endpoint
 app.get("/free-endpoint", (request, response) => {
   response.json({ message: "You are free to access me anytime" });
