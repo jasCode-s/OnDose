@@ -140,14 +140,35 @@ const ingredients = {
   "lipitor": "Atorvastatin",
   "aspirin": "Aspirin",
   "cozaar": "Losartan potassium",
-  "metformin": "Metformin hydochloride"
+  "metformin": "Metformin hydochloride",
+  "zocor": "Simvastatin",
+  "omeprazole": "Omeprazole",
+  "calcium": "Calcium",
+  "hydrocodone": "Hydrocodone",
+  "birth control": "Estrogen, progesterone"
 }
 
 const sideEffects = {
   "lipitor": "nausea, headaches, nosebleeds, sore throat, cold-like symptoms, constipation, diarrhea",
   "aspirin": "abdominal pain/discomfort, bloody urine, chest pain, confusion, constipation, fever, etc.",
   "cozaar": "burning/tingling feeling, confusion, difficulty breathing, dizziness, irregular heartbeat, stomach pain, etc.",
-  "metformin": "nausea, vomitting, diarrhea, stomach ache, lost of appetite, metallic taste"
+  "metformin": "nausea, vomitting, diarrhea, stomach ache, lost of appetite, metallic taste",
+  "zocor": "memory problems, confusion",
+  "omeprazole": "headache, abdominal pain",
+  "calcium": "constipation, severe diarrhea, abdominal pain",
+  "birth control": "spotting, breast tenderness, headaches, nausea, bloating, increased blood pressure, etc."
+}
+
+const images = {
+  "lipitor": "https://pharmacy.ansvel.com.ng/wp-content/uploads/sites/10/2016/03/lipitor-_atorvastatin-calcium_-20mg-x30-tabs-1_kjvg2h_500x.webp",
+  "aspirin": "https://m.media-amazon.com/images/I/71-g7kjSLmL.jpg",
+  "cozaar": "https://om.rosheta.com/upload/5ce9b39d79e7f7470ac2fd258277c40ef39f4d76af8092dfdd990c9ac785978b.jpg",
+  "metformin": "https://www.mcguffmedical.com/content/images/thumbs/0013873_metformin-500mg-100-tabletsbottle.jpeg",
+  "zocor": "https://cdn.shopify.com/s/files/1/0571/9752/7133/articles/zocor-welzo.png?v=1679833235",
+  "calcium": "https://cdn.shopify.com/s/files/1/0066/7569/3639/products/NM2508L601CALCIUMfront_47558c0b-ea8a-47b5-a0ec-e0c9d0b3fbd9.png?v=1644458739",
+  "omeprazole": "https://m.media-amazon.com/images/I/61QFgOl6xpL._AC_UF1000,1000_QL80_.jpg",
+  "hydrocodone": "https://www.banyantreatmentcenter.com/wp-content/uploads/2021/10/hydrocodine-blog-img.jpg",
+  "birth control": "https://i0.wp.com/post.healthline.com/wp-content/uploads/2021/05/birthcontrol-pills-1296x728-header.jpg?w=1155&h=1528"
 }
 
 function getIngredients(med) {
@@ -166,7 +187,8 @@ function getSideEffects(med) {
 }
 
 function getImage(med) {
-  return 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available';
+  if(med.toLowerCase() in images) return images[med.toLowerCase()];
+  return "https://t4.ftcdn.net/jpg/02/87/86/27/360_F_287862773_eVjRtEA5jOYUKywa9xy9kunFr4BquZdO.jpg";
 }
 
 function getDescription(dosage) {
