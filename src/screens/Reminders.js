@@ -89,7 +89,7 @@ const Reminders = () => {
     return groups.sort((a, b) => new Date('2023/01/01 ' + a.time) - new Date('2023/01/01 ' + b.time));
   };
 
-  const filterButtons = ['Uncompleted', 'Completed'];
+  const filterButtons = ['Untaken', 'Taken'];
 
   const filteredMeds = selectedIndex === 2 ? Meds : Meds.filter((Med) => Med.completed === (selectedIndex === 1));
 
