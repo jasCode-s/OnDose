@@ -1,1 +1,1 @@
-export const SERVER_URL = "https://few-pears-deny-73-154-134-130.loca.lt/"
+export const SERVER_URL = "https://puny-signs-sing-73-154-134-130.loca.lt/"

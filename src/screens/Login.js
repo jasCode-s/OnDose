@@ -1,17 +1,34 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
 // import { UserInputs } from './components/UserInputs';
 import { AuthContext } from '../AuthContext';
 import theme from '../theme';
 
+import { SERVER_URL } from './ApiCalls';
+import axios from 'axios';
+
 const Login = ({navigation}) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const { setIsAuthenticated } = useContext(AuthContext);
 
-  const handleLogin = () => {
-    // logic for login
+  async function handleLogin() {
+    credentials = {"username": username, "password": password};
+    const response = await axios.post(`${SERVER_URL}login`, JSON.stringify(credentials), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.status != 200) {
+      const message = `An error occured: ${response.statusText}`;
+      window.alert(message);
+      setIsAuthenticated(false);
+      return;
+    }
+
     setIsAuthenticated(true);
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -20,8 +37,9 @@ const Login = ({navigation}) => {
         style={styles.Logo}
         source={require('../../assets/Logo.png')}
       />
-      <Input placeholder="Enter Your Email" placeholderTextColor={theme.colors.description} keyboardType="email-address"/>
-      <Input placeholder="Enter Your Password" placeholderTextColor={theme.colors.description} secureTextEntry/>
+      <Input value={username} onChangeText={setUsername} placeholder="Enter Your Username" placeholderTextColor={theme.colors.description} keyboardType="default"/>
+      <Input value={password} onChangeText={setPassword} placeholder="Enter Password" placeholderTextColor={theme.colors.description} secureTextEntry/>
+      
       <TouchableOpacity style={styles.createAccountButton} onPress={() => {navigation.navigate('ResetPassword');}}>
         <Text style={styles.TextCreateAccount}>Forget password?</Text>
       </TouchableOpacity>

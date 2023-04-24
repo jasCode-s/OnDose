@@ -1,28 +1,56 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
 import { AuthContext } from '../AuthContext';
 import theme from '../theme';
 
-const SignUp = ({ navigation }) => {
-  // Will be handled later
-  // const { setIsAuthenticated } = useContext(AuthContext);
+import { SERVER_URL } from './ApiCalls';
+import axios from 'axios';
 
-  // const handleSignup = () => {
-  //   // add signup
-  //   setIsAuthenticated(true);
-  // };
+
+const SignUp = ({ navigation }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [confirmEmail, setConfirmEmail] = useState('');
+  const { setIsAuthenticated } = useContext(AuthContext);
+
+  async function handleSignup() {
+    if(confirmPassword !== password) {
+      window.alert("Make sure passwords match.");
+      return;
+    }
+    if(confirmEmail !== email) {
+      window.alert("Make sure emails match.");
+      return;
+    }
+    credentials = {"username": username, "password": password, "email": email};
+    const response = await axios.post(`${SERVER_URL}register`, JSON.stringify(credentials), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.status != 200) {
+      const message = `An error occured: ${response.statusText}`;
+      window.alert(message);
+      setIsAuthenticated(false);
+      return;
+    }
+    navigation.navigate('SignUpSuccess');
+
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.TextTitle}>Sign Up</Text>
-      <Input placeholder="Enter Username" placeholderTextColor={theme.colors.description}/>
-      <Input placeholder="Enter Email" placeholderTextColor={theme.colors.description} keyboardType="email-address" />
-      <Input placeholder="Comfirm Email" placeholderTextColor={theme.colors.description} keyboardType="email-address"/>
-      <Input placeholder="Enter Password" placeholderTextColor={theme.colors.description} secureTextEntry/>
-      <Input placeholder="Confirm Password" placeholderTextColor={theme.colors.description} secureTextEntry />
+      <Input value={username} onChangeText={setUsername} placeholder="Enter Username" placeholderTextColor={theme.colors.description}/>
+      <Input value={email} onChangeText={setEmail} placeholder="Enter Email" placeholderTextColor={theme.colors.description} keyboardType="email-address" />
+      <Input value={confirmEmail} onChangeText={setConfirmEmail} placeholder="Comfirm Email" placeholderTextColor={theme.colors.description} keyboardType="email-address"/>
+      <Input value={password} onChangeText={setPassword} placeholder="Enter Password" placeholderTextColor={theme.colors.description} secureTextEntry/>
+      <Input value={confirmPassword} onChangeText={setConfirmPassword} placeholder="Confirm Password" placeholderTextColor={theme.colors.description} secureTextEntry />
       
-      <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('SignUpSuccess');}}>
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
             <Text style={styles.TextSignUp}>SIGN UP</Text>
       </TouchableOpacity>
       

@@ -58,7 +58,7 @@ app.post("/register", (request, response) => {
         .save()
         // return success if the new user is added to the database successfully
         .then((result) => {
-          response.status(201).send({
+          response.status(200).send({
             message: "User Created Successfully",
             result,
           });
@@ -113,7 +113,7 @@ app.post("/login", (request, response) => {
           );
 
           //   return success response
-          response.status(201).send({
+          response.status(200).send({
             message: "Login Successful",
             username: user.username,
             token,
