@@ -4,8 +4,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import theme from '../theme';
 import Collapsible from 'react-native-collapsible';
 
-const CustomListItem = ({ item, onDetailPress, onCompletePress }) => {
-  const isCompleted = item.completed;
+const CustomListItem = ({ item, onDetailPress, onTakePress }) => {
+  const istaken = item.taken;
 
   // Code adapted from https://snack.expo.dev/embedded/@aboutreact/collapsible-and-accordion-view-in-react-native?iframeId=h1ftiunob9&preview=true&platform=ios&theme=dark on April 8th
   // Collapse items using Caollapsible
@@ -23,13 +23,13 @@ const CustomListItem = ({ item, onDetailPress, onCompletePress }) => {
           style={[
             styles.markerButton,
             {
-              backgroundColor: isCompleted ? theme.colors.red : theme.colors.green,
+              backgroundColor: istaken ? theme.colors.red : theme.colors.green,
             },
           ]}
-          onPress={onCompletePress}
+          onPress={onTakePress}
         >
           <FontAwesome
-            name={isCompleted ? 'times' : 'check'}
+            name={istaken ? 'times' : 'check'}
             size={35}
             color={theme.colors.white}
           />
