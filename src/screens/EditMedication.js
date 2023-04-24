@@ -35,7 +35,7 @@ const EditMedication = ({ route, navigation }) => {
   };
 
   async function handleDelete() {
-    const response = await axios.post(`${SERVER_URL}delete-medication/${medication._id}`, '', {
+    const response = await axios.post(`${SERVER_URL}delete-medication/${medication._id}`, [], {
       headers: {
         'Content-Type': 'application/json'
       }

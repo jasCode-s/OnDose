@@ -119,7 +119,8 @@ const Reminders = () => {
 
   const groupedMeds = groupMedsByTime(filteredMeds);
 
-  const totalMeds = Meds.length;
+  var totalMeds = Meds.length;
+  if (totalMeds == 0) totalMeds = 1;
   const completedMeds = Meds.filter(Med => Med.completed).length;
   const progress = completedMeds / totalMeds;
 
