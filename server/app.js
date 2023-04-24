@@ -288,6 +288,42 @@ app.get("/get-medications", async (request, response) => {
   }
 });
 
+// Returns the military time for the hour
+function getHour(time) {
+  let timeLen = time.length;
+  let medHour = timeLen == 7 ? time.substring(0, 1) : time.substring(0, 2);
+  let amOrPM = timeLen == 7 ? time.substring(5, 7) : time.substring(6, 8);
+  let hour = amOrPM === "PM" ? parseInt(medHour) + 12 : parseInt(medHour);
+  return hour;
+}
+
+// Sorts the data in ascending order of time
+function sortByTime(data) {
+  var currMed, currTime, j;
+  for (var i = 1; i < data.length; i++) {
+    currMed = data[i];
+    currTime = getHour(data[i].time);
+    j = i - 1;
+    while (j >= 0 && getHour(data[j].time) > currTime) {
+      data[j + 1] = data[j];
+      j = j - 1;
+    }
+    data[j+1] = currMed;
+  }
+}
+
+// get medication reminders
+app.get("/get-reminders", async (request, response) => {
+  try{
+    let data = await Medication.find();
+    sortByTime(data);
+    response.status(200).json(data);
+  }
+  catch(error){
+    response.status(500).json({message: error.message});
+  }
+});
+
 // get all allergies
 app.get("/get-allergies", async (request, response) => {
   try{

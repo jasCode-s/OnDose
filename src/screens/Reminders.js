@@ -29,21 +29,21 @@ const Reminders = () => {
   const [Meds, setMeds] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const navigation = useNavigation();
+
+  
   
   useFocusEffect(
     React.useCallback(() =>{
       async function getMedications() {
-        const response = await fetch(`${SERVER_URL}get-medications`);
+        const response = await fetch(`${SERVER_URL}get-reminders`);
 
         if(!response.ok) {
           const message = `An error occured: ${response.statusText}`;
-          console.log(response.json());
-          window.alert(message);
+          console.log(message);
           return;
         }
 
         const Meds = await response.json();
-        console.log(Meds);
         setMeds(Meds);
       }
       getMedications();
