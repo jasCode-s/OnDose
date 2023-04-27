@@ -9,6 +9,7 @@ import { SERVER_URL } from './ApiCalls';
 import CustomListItem from '../components/ListItem';
 import theme from '../theme';
 import * as Progress from 'react-native-progress';
+import axios from 'axios';
 
 const fakeData = [
   { id: 1, name: 'Medication A', description: 'Take 2 Pills', completed: false, time: '8:00 AM', timesLeft: 1,
@@ -57,7 +58,7 @@ const Reminders = () => {
   const onShowSnackBar = () => setVisible(true);
   const onDismissSnackBar = () => setVisible(false);
 
-  const handleCompletePress = (MedId, MedTime, MedTitle, MedCompleted) => {
+  const handleCompletePress = async (MedId, MedTime, MedTitle, MedCompleted) => {
     var currHour = new Date().getHours();
     var currMin = new Date().getMinutes();
     var medTimeLen = MedTime.length;
@@ -82,6 +83,22 @@ const Reminders = () => {
 
     if (!canTake) {
       onShowSnackBar();// pop snakerbar notification
+    }
+
+    if (canTake) {
+      const updatedMed = { "completed": !MedCompleted};
+      const response = await axios.post(`${SERVER_URL}update-medication/${MedId}`, JSON.stringify(updatedMed), {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    
+      if(response.status != 200) {
+        const message = `An error occured`;
+        window.alert(message);
+        console.log(JSON.stringify(response));
+        return;
+      }
     }
 
     setMeds((prevMeds) =>

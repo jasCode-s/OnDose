@@ -338,6 +338,8 @@ app.get("/get-allergies", async (request, response) => {
 // Update a medication by id
 app.post("/update-medication/:id", async (request, response) => {
   let myquery = { _id: new ObjectId(request.params.id) };
+  let timesLeft = null;
+  if(request.body.timesLeft) timesLeft = Number(request.body.timesLeft)
   let newvalues = {
     $set: {
       name: request.body.name,
@@ -345,7 +347,7 @@ app.post("/update-medication/:id", async (request, response) => {
       frequency: request.body.frequency,
       when: request.body.when,
       completed: Boolean(request.body.completed),
-      timesLeft: Number(request.body.timesLeft),
+      timesLeft: timesLeft,
     },
   };
   try {
