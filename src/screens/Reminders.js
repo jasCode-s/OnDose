@@ -130,12 +130,12 @@ const Reminders = () => {
     return groups.sort((a, b) => new Date('2023/01/01 ' + a.time) - new Date('2023/01/01 ' + b.time));
   };
 
-  const filterButtons = ['Uncompleted', 'Completed'];
+  const filterButtons = ['Untaken', 'Taken'];
 
-  const filteredMeds = selectedIndex === 2 ? Meds : Meds.filter((Med) => Med.completed === (selectedIndex === 1));
+  const filteredMeds = selectedIndex === 2 ? Meds : Meds.filter((Med) => Med.taken === (selectedIndex === 1));
 
   const groupedMeds = groupMedsByTime(filteredMeds);
-
+  
   var totalMeds = Meds.length;
   if (totalMeds == 0) totalMeds = 1;
   const completedMeds = Meds.filter(Med => Med.completed).length;
@@ -156,7 +156,7 @@ const Reminders = () => {
             unselectedTextStyle={{ color: theme.colors.description }}
           />
           <Text style={styles.progressText}>
-            Your Progress For Today ({completedMeds}/{totalMeds})
+            Your Progress For Today ({takenMeds}/{totalMeds})
           </Text>
           <Progress.Bar
             progress={progress}

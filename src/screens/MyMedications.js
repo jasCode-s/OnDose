@@ -105,7 +105,7 @@ const MyMedications = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>
-        Your Medications
+        My Medications
       </Text>
 
       <FlatList

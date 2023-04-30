@@ -112,7 +112,7 @@ const AddMedication = ({ navigation }) => {
                 </Picker>
                 </View>
             )}
-          </View>
+          </View>  
         ))}
       </View>
 
