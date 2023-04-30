@@ -1,29 +1,30 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { View, StyleSheet, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import theme from '../theme';
 import CustomListItem from '../components/ListMedOnly';
 import MedDetail from './MedDetail';
 import AddMedication from './AddMedication';
+import { SERVER_URL } from './ApiCalls';
 
 
 const fakeData = [
-  { id: 1, title: 'Medication A', description: 'Take 2 Pills', taken: false, time: '8:00 AM', 
+  { _id: 1, title: 'Medication A', description: 'Take 2 Pills', completed: false, time: '8:00 AM', 
   ingredients: 'Melatonin 5mg, Xylitol, Cellulose Gum, Soy Polysacchrides, Maltodertrin, Dextrose',
   dosages: '2',
   frequency: '1',
   sideEffects: 'Vivid dreams or nightmares; Short-term feelings of depression; Irritability, Stomach cramps; Diarrhea; Constipation; Decreased appetite', 
   interaction: 'No major interactions is found in current prescription. No major interactions is found with my allergies.',
   image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
-  { id: 2, title: 'Medication B', description: 'Take 1 Pill', taken: false, time: '6:00 PM', 
+  { _id: 2, title: 'Medication B', description: 'Take 1 Pill', completed: false, time: '6:00 PM', 
   ingredients: 'Zincum aceticum 2x, Zincum gulconicum 1x',
   dosages: '1',
   frequency: '2',
   sideEffects: 'burning or stinging; irritation inside the nose; runny nose; sneezing',
   interaction: 'No major interactions is found in current prescription. No major interactions is found with my allergies.',
   image: 'https://images.albertsons-media.com/is/image/ABS/960104140-ECOM?$ng-ecom-pdp-tn$&defaultImage=Not_Available' },
-  { id: 3, title: 'Medication C', description: 'Take 1 Pill', taken: false, time: '6:00 PM', 
+  { _id: 3, title: 'Medication C', description: 'Take 1 Pill', completed: false, time: '6:00 PM', 
   ingredients:'Acetaminophen 500mg',
   dosages: '1',
   frequency: '1',
@@ -36,9 +37,9 @@ const MedicationItem = ({ medication }) => (
   <View style={styles.medicationItem}>
     <Image source={medication.image} style={styles.medicationImage} />
     <View style={styles.medicationInfo}>
-      <Text style={styles.medicationTitle}>{medication.title}</Text>
+      <Text style={styles.medicationTitle}>{medication.name}</Text>
       <Text style={styles.medicationDetail}>{medication.dosage}</Text>
-      <Text style={styles.medicationDetail}>{medication.id}</Text>
+      <Text style={styles.medicationDetail}>{medication._id}</Text>
       <Text style={styles.medicationDetail}>{medication.ingredients}</Text>
       <Text style={styles.medicationDetail}>{medication.sideEffects}</Text>
       <Text style={styles.medicationDetail}>{medication.interaction}</Text>
@@ -49,7 +50,27 @@ const MedicationItem = ({ medication }) => (
 );
 
 const MyMedications = ({ navigation }) => {
-  const [Meds, setMeds] = useState(fakeData);
+  const [Meds, setMeds] = useState([]);
+
+  useFocusEffect(
+    React.useCallback(() =>{
+      async function getMedications() {
+        const response = await fetch(`${SERVER_URL}get-medications`);
+
+        if(!response.ok) {
+          const message = `An error occured: ${response.statusText}`;
+          console.log(response.json());
+          window.alert(message);
+          return;
+        }
+
+        const Meds = await response.json();
+        setMeds(Meds);
+      }
+      getMedications();
+    }, [])
+  );
+
   const handleMedicationPress = (medication) => {
     navigation.navigate('MedDetail', { medication });
   };
@@ -62,11 +83,11 @@ const MyMedications = ({ navigation }) => {
    // group Med by ID
    const groupMeds = (Meds) => {
     const groups = Meds.reduce((acc, Med) => {
-      const group = acc.find((g) => g.id === Med.id);
+      const group = acc.find((g) => g.id === Med._id);
       if (group) {
         group.Meds.push(Med);
       } else {
-        acc.push({id: Med.id, Meds: [Med] });
+        acc.push({id: Med._id, Meds: [Med] });
       }
       return acc;
     }, []);
@@ -94,8 +115,8 @@ const MyMedications = ({ navigation }) => {
           <View style={styles.idGroupContainer}>
             {item.Meds.map((Med) => (
               <CustomListItem
-                key={Med.id}
                 item={Med}
+                key={Med._id}
                 onDetailPress={() => {
                   navigation.navigate('MedDetail', { medication: Med});
                 }}

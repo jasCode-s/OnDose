@@ -10,7 +10,7 @@ const MedDetail = ({ route }) => {
 
   const data = [
     { label: 'Ingredients', value: medication.ingredients },
-    { label: 'Dosages', value: medication.dosages },
+    { label: 'Dosages', value: medication.dosage },
     { label: 'Side Effects', value: medication.sideEffects },
     { label: 'Interaction', value: medication.interaction },
   ];
