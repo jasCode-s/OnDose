@@ -145,7 +145,11 @@ const ingredients = {
   "omeprazole": "Omeprazole",
   "calcium": "Calcium",
   "hydrocodone": "Hydrocodone",
-  "birth control": "Estrogen, progesterone"
+  "birth control": "Estrogen, progesterone",
+  "norvasc": "Amlodipine",
+  "amlodipine":"Amlodipine",
+  "losartan": "Losartan"
+
 }
 
 const sideEffects = {
@@ -155,8 +159,12 @@ const sideEffects = {
   "metformin": "nausea, vomitting, diarrhea, stomach ache, lost of appetite, metallic taste",
   "zocor": "memory problems, confusion",
   "omeprazole": "headache, abdominal pain",
+  "hydrocodone": "stomach pain, dry mouth, tiredness, headache, back pain, muscle, frequent or painful urination",
   "calcium": "constipation, severe diarrhea, abdominal pain",
-  "birth control": "spotting, breast tenderness, headaches, nausea, bloating, increased blood pressure, etc."
+  "birth control": "spotting, breast tenderness, headaches, nausea, bloating, increased blood pressure, etc.",
+  "norvasc": "swelling, headache, upset stomach, nausea, stomach pain, dizziness, drowsiness, etc.",
+  "amlodopine": "swelling, headache, upset stomach, nausea, stomach pain, dizziness, drowsiness, etc.",
+  "losartan": "abdominal pain/discomfort, bloody urine, chest pain, confusion, constipation, fever, etc."
 }
 
 const images = {
@@ -168,7 +176,10 @@ const images = {
   "calcium": "https://cdn.shopify.com/s/files/1/0066/7569/3639/products/NM2508L601CALCIUMfront_47558c0b-ea8a-47b5-a0ec-e0c9d0b3fbd9.png?v=1644458739",
   "omeprazole": "https://m.media-amazon.com/images/I/61QFgOl6xpL._AC_UF1000,1000_QL80_.jpg",
   "hydrocodone": "https://www.banyantreatmentcenter.com/wp-content/uploads/2021/10/hydrocodine-blog-img.jpg",
-  "birth control": "https://i0.wp.com/post.healthline.com/wp-content/uploads/2021/05/birthcontrol-pills-1296x728-header.jpg?w=1155&h=1528"
+  "birth control": "https://i0.wp.com/post.healthline.com/wp-content/uploads/2021/05/birthcontrol-pills-1296x728-header.jpg?w=1155&h=1528",
+  "amlodopine": "https://cdn.commercev3.net/cdn.shopmedvet.com/images/large/RXAMLOD10-90.jpg",
+  "norvasc": "https://s40123.pcdn.co/wp-content/uploads/2013/12/Norvasc.jpg.optimal.jpg",
+  "losartan": "https://om.rosheta.com/upload/5ce9b39d79e7f7470ac2fd258277c40ef39f4d76af8092dfdd990c9ac785978b.jpg"
 }
 
 function getIngredients(med) {
